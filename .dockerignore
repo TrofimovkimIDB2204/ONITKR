@@ -1,0 +1,8 @@
+.git
+.venv
+pycache
+*.pyc
+*.pyo
+*.pyd
+*.log
+.env

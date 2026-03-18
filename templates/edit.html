@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Редактировать пилота</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-5">
+            <div class="card card-body shadow">
+                <h4 class="mb-4">Редактировать данные пилота</h4>
+                <form action="/gui/update/{{ driver.id }}" method="post">
+                    <div class="mb-3">
+                        <label class="form-label">ФИО</label>
+                        <input type="text" name="name" value="{{ driver.name }}" class="form-control" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Лучший круг</label>
+                        <input type="number" step="0.001" name="best_lap_time" value="{{ driver.best_lap_time }}" class="form-control" required>
+                    </div>
+                    <div class="d-flex gap-2">
+                        <button type="submit" class="btn btn-success w-100">Сохранить</button>
+                        <a href="/" class="btn btn-secondary w-100">Отмена</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
