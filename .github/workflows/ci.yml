@@ -1,0 +1,58 @@
+name: Simple CI/CD
+
+on:
+  push:
+    branches: [ "main", "master" ]
+
+permissions:
+  contents: read
+  packages: write
+
+jobs:
+  # 1. Сначала тесты
+  test:
+    runs-on: ubuntu-latest
+    services:
+      db:
+        image: postgres:15
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: password
+          POSTGRES_DB: test_db
+        ports: ["5432:5432"]
+        options: --health-cmd pg_isready --health-interval 5s
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+      - name: Run tests
+        env:
+          DATABASE_URL: postgresql://postgres:password@localhost:5432/test_db
+        run: |
+          pip install -r requirements.txt pytest pytest-asyncio httpx
+          pytest
+
+  # 2. Сборка и сохранение образа в GitHub
+  build:
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      # Логинимся в GitHub Registry (автоматически, без ручных секретов)
+      - name: Login to GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      # Собираем и пушим образ
+      - name: Build and push
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          push: true
+          # Имя образа будет: ghcr.io/твой-логин/имя-репозитория:latest
+          tags: ghcr.io/${{ github.repository }}:latest
