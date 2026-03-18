@@ -43,10 +43,9 @@ jobs:
 
       - name: Run tests
         env:
-          # Для тестов в GitHub Actions подключаемся к localhost, так как пробросили порты
           DATABASE_URL: postgresql://${{ secrets.POSTGRES_USER }}:${{ secrets.POSTGRES_PASSWORD }}@localhost:5432/${{ secrets.POSTGRES_DB }}
         run: |
-          pytest
+          python -m pytest
 
   # 2. Сборка и отправка образа в GHCR
   build:
