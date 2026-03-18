@@ -69,5 +69,5 @@ jobs:
           push: true
           # Образ сохранится в твоем профиле GitHub
           tags: |
-            ghcr.io/trofimovakimidb2204/simracing-app:latest
-            ghcr.io/trofimovakimidb2204/simracing-app:${{ github.sha }}
+            ghcr.io/trofimovkimidb2204/simracing-app:latest
+            ghcr.io/trofimovkimidb2204/simracing-app:${{ github.sha }}
